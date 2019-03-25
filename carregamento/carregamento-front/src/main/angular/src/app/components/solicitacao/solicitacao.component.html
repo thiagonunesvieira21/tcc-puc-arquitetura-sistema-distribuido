@@ -1,0 +1,68 @@
+  <div class="col-xs-12">
+    <h2>Lista de Solicita&ccedil;&otilde;es</h2>
+
+    <clr-alerts>
+        <clr-alert *ngFor="let alert of alerts"
+                   [clrAlertType]="alert.type"
+                   [clrAlertAppLevel]="true">
+            <div class="alert-item">
+                <span class="alert-text">{{alert.text}}</span>
+                <div class="alert-actions"
+                     *ngIf="alert.action">
+                    <button class="btn alert-action">{{alert.action}}</button>
+                </div>
+            </div>
+        </clr-alert>
+    </clr-alerts>
+
+    <br/>
+
+    <button class="btn btn-primary" (click)="transferirOpenModal()">Transferir</button>
+
+    <clr-select-container>
+      <label>Selecione a empresa concorrente:</label>
+      <select clrSelect name="empresa" name="empresa" [(ngModel)]="empresa">
+        <option selected="selected" disabled></option>
+        <option *ngFor="let concorrente of concorrentes" [ngValue]="concorrente">{{concorrente.nome}}</option>
+      </select>
+      <clr-control-error>Empresa concorrente é obrigatório!</clr-control-error>
+    </clr-select-container>
+
+    <clr-datagrid  [clrDgSingleSelected]="selected"
+        (clrDgSingleSelectedChange)="selectedChanged($event)">
+	    <clr-dg-column>C&oacute;digo da Solicita&ccedil;&atilde;o</clr-dg-column>
+	    <clr-dg-column>Data de Cadastro</clr-dg-column>
+	    <clr-dg-column>Origem</clr-dg-column>
+	    <clr-dg-column>Destino</clr-dg-column>
+      <clr-dg-column>Motivo</clr-dg-column>
+
+	    <clr-dg-row *clrDgItems="let solicitacao of solicitacaos" [clrDgItem]="solicitacao">
+	        <clr-dg-cell>{{solicitacao.id}}</clr-dg-cell>
+	        <clr-dg-cell>{{solicitacao.dataHoaraSolicitacao | date}}</clr-dg-cell>
+	        <clr-dg-cell>{{solicitacao.origem}}</clr-dg-cell>
+	        <clr-dg-cell>{{solicitacao.destino}}</clr-dg-cell>
+          <clr-dg-cell>{{solicitacao.tipoExcepcionalidade}}</clr-dg-cell>
+	    </clr-dg-row>
+
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Solicita&ccedil;&otilde;es por páginas</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+          de {{pagination.totalItems}} Solicita&ccedil;&atilde;o
+        </clr-dg-pagination>
+      </clr-dg-footer>
+	 </clr-datagrid>
+
+  <clr-modal [(clrModalOpen)]="isModalVisible">
+    <h3 class="modal-title">Transferir solicita&ccedil;&atilde;o</h3>
+    <div class="modal-body">
+      <p>
+        Deseja Transferir a solicita&ccedil;&atilde;o {{selected.id}} para a empresa {{empresa.nome}}?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="transferir();">Sim</button>
+      <button type="button" class="btn btn-outline" (click)="isModalVisible = false">Não</button>
+    </div>
+  </clr-modal>
+
+  </div>

@@ -1,0 +1,82 @@
+  <div class="col-xs-12">
+    <h2>Lista de Solicita&ccedil;&otilde;es Entregues</h2>
+
+    <clr-alerts>
+        <clr-alert *ngFor="let alert of alerts"
+                   [clrAlertType]="alert.type"
+                   [clrAlertAppLevel]="true">
+            <div class="alert-item">
+                <span class="alert-text">{{alert.text}}</span>
+                <div class="alert-actions"
+                     *ngIf="alert.action">
+                    <button class="btn alert-action">{{alert.action}}</button>
+                </div>
+            </div>
+        </clr-alert>
+    </clr-alerts>
+
+    <br/>
+
+    <button class="btn btn-primary" (click)="avaliarOpenModal()">Avaliar</button>
+
+    <clr-datagrid  [clrDgSingleSelected]="selected"
+        (clrDgSingleSelectedChange)="selectedChanged($event)">
+	    <clr-dg-column>C&oacute;digo da Solicita&ccedil;&atilde;o</clr-dg-column>
+	    <clr-dg-column>Data de Cadastro</clr-dg-column>
+	    <clr-dg-column>Origem</clr-dg-column>
+	    <clr-dg-column>Destino</clr-dg-column>
+
+	    <clr-dg-row *clrDgItems="let solicitacao of solicitacaos" [clrDgItem]="solicitacao">
+	        <clr-dg-cell>{{solicitacao.id}}</clr-dg-cell>
+	        <clr-dg-cell>{{solicitacao.dataHoaraSolicitacao | date}}</clr-dg-cell>
+	        <clr-dg-cell>{{solicitacao.origem}}</clr-dg-cell>
+	        <clr-dg-cell>{{solicitacao.destino}}</clr-dg-cell>
+	    </clr-dg-row>
+
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Solicita&ccedil;&otilde;es por páginas</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+          de {{pagination.totalItems}} Solicita&ccedil;&atilde;o
+        </clr-dg-pagination>
+      </clr-dg-footer>
+	 </clr-datagrid>
+
+  <clr-modal [(clrModalOpen)]="isModalVisible">
+    <h3 class="modal-title">Avaliar Entrega</h3>
+    <div class="modal-body">
+
+      <clr-input-container>
+          <label>Email</label>
+          <input clrInput type="text" [(ngModel)]="avaliacao.emailContatoAvaliador" name="emailContatoAvaliado" size="100" required />
+          <clr-control-error>É obrigatório o preenchimento do email!</clr-control-error>
+      </clr-input-container>
+
+      <clr-select-container>
+        <label>Nota</label>
+        <select clrSelect name="options" [(ngModel)]="avaliacao.nota" required>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <clr-control-helper>Avalie a entrega com uma nota de 0 a 5.</clr-control-helper>
+        <clr-control-error>É obrigatório o preenchimento da nota!</clr-control-error>
+      </clr-select-container>
+
+      <clr-textarea-container>
+          <label>Avaliação</label>
+          <textarea clrTextarea [(ngModel)]="avaliacao.deAvaliacao" name="description" required></textarea>
+          <clr-control-error>É obrigatório o preenchimento da avaliação!</clr-control-error>
+      </clr-textarea-container>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="salvar();">Salvar</button>
+      <button type="button" class="btn btn-outline" (click)="isModalVisible = false">Cancelar</button>
+    </div>
+  </clr-modal>
+
+  </div>

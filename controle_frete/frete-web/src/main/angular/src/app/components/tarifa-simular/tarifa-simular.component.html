@@ -1,0 +1,50 @@
+  <div class="col-xs-12">
+    <h2>Simular Tarifa Frete</h2>
+
+    <clr-input-container>
+        <label>Origem:</label>
+        <input clrInput type="text" [(ngModel)]="cepOrigem" name="cepOrigem" required />
+        <clr-control-error>Origem é de preenchimento obrigatório.</clr-control-error>
+    </clr-input-container>
+
+    <clr-input-container>
+        <label>Destino:</label>
+        <input clrInput type="text" [(ngModel)]="cepDestino" name="cepDestino" required />
+        <clr-control-error>Destino é de preenchimento obrigatório.</clr-control-error>
+    </clr-input-container>
+
+    <clr-input-container>
+        <label>Distância:</label>
+        <input clrInput type="text" [(ngModel)]="qtDistancia" name="qtDistancia" required />
+        <clr-control-error>Distância é de preenchimento obrigatório.</clr-control-error>
+    </clr-input-container>
+
+    <br/>
+    <button class="btn btn-primary" type="submit" (click)="simular()">Simular</button>
+
+    <br/>
+
+    <clr-datagrid>
+      <clr-dg-column>Origem</clr-dg-column>
+	    <clr-dg-column>Destino</clr-dg-column>
+      <clr-dg-column>Média das Tarifas</clr-dg-column>
+      <clr-dg-column>Prazo Entrega (Dias)</clr-dg-column>
+      <clr-dg-column>Distância</clr-dg-column>
+      <clr-dg-column>Valor Frete</clr-dg-column>
+
+	    <clr-dg-row *ngFor="let tarifa of tarifas" [clrDgItem]="tarifa">
+          <clr-dg-cell>{{tarifa.cepOrigem}}</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.cepDestino}}</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.vrTarifaFrete}}</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.tempoEntrega == 0 ? 1 : tarifa.tempoEntrega}}</clr-dg-cell>
+	        <clr-dg-cell>{{tarifa.qtDistancia}} Km</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.valor}}</clr-dg-cell>
+	    </clr-dg-row>
+	 </clr-datagrid>
+   <br/>
+   <p>
+     <b>Prazo Entrega = </b> ((Distância * 2) / 60 Km/h) / 24 Horas. Valor Mínimo 1 dia. <br/>
+     <b>Valor Frete =</b> Valor da Média dos Fretes * Distância
+   </p>
+
+  </div>

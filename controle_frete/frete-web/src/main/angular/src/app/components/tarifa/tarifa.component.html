@@ -1,0 +1,57 @@
+  <div class="col-xs-12">
+    <h2>{{isAlteracao ? 'Editar' : 'Registrar'}} Tarifa de Frete </h2>
+
+    <clr-alerts>
+        <clr-alert *ngFor="let alert of alerts"
+                   [clrAlertType]="alert.type"
+                   [clrAlertAppLevel]="true">
+            <div class="alert-item">
+                <span class="alert-text">{{alert.text}}</span>
+                <div class="alert-actions"
+                     *ngIf="alert.action">
+                    <button class="btn alert-action">{{alert.action}}</button>
+                </div>
+            </div>
+        </clr-alert>
+    </clr-alerts>
+
+    <br/>
+
+    <form clrForm class="clr-form clr-form-horizontal">
+      <clr-input-container>
+          <label>Origem:</label>
+          <input clrInput type="text" [(ngModel)]="tarifa.cepOrigem" name="cepOrigem"  />
+          <clr-control-error>Origem é de preenchimento obrigatório.</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+          <label>Destino:</label>
+          <input clrInput type="text" [(ngModel)]="tarifa.cepDestino" name="cepDestino"  />
+          <clr-control-error>Destino é de preenchimento obrigatório.</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+          <label>Valor da Tarifa:</label>
+          <input clrInput type="text" [(ngModel)]="tarifa.vrTarifaFrete" name="vrTarifaFrete"  />
+          <clr-control-error>Valor da Tarifa é de preenchimento obrigatório.</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+          <label>Distância (Km):</label>
+          <input clrInput type="text" [(ngModel)]="tarifa.qtDistancia" name="qtDistancia"  />
+          <clr-control-error>Distância é de preenchimento obrigatório.</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+          <label>Distância Concorrência (Km):</label>
+          <input clrInput type="text" [(ngModel)]="tarifa.qtDistanciaConcorrente" name="qtDistanciaConcorrente"  />
+          <clr-control-error>Distância Concorrência é de preenchimento obrigatório.</clr-control-error>
+      </clr-input-container>
+
+      <br/>
+      <button class="btn btn-primary" type="submit" *ngIf="!isAlteracao" (click)="salvar()">Salvar</button>
+      <button class="btn btn-primary" type="submit" *ngIf="isAlteracao" (click)="alterar()">Aterar</button>
+      <button class="btn" type="button" (click)="clear()">Limpar</button>
+    </form>
+
+  </div>

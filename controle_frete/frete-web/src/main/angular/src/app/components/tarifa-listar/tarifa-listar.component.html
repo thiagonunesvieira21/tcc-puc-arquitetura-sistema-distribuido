@@ -1,0 +1,87 @@
+  <div class="col-xs-12">
+    <h2>Tarifas de Frete</h2>
+
+    <clr-alerts>
+        <clr-alert *ngFor="let alert of alerts"
+                   [clrAlertType]="alert.type"
+                   [clrAlertAppLevel]="true">
+            <div class="alert-item">
+                <span class="alert-text">{{alert.text}}</span>
+                <div class="alert-actions"
+                     *ngIf="alert.action">
+                    <button class="btn alert-action">{{alert.action}}</button>
+                </div>
+            </div>
+        </clr-alert>
+    </clr-alerts>
+
+    <br/>
+
+    <clr-datagrid [clrDgSingleSelected]="selected"
+        (clrDgSingleSelectedChange)="selectedChanged($event)">
+      <clr-dg-action-bar>
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="isModalVisibleAjuste = true" *ngIf="tarifas">Ajustar</button>
+            <button type="button" class="btn btn-sm btn-secondary" (click)="onDelete()" *ngIf="selected!==undefined"><clr-icon shape="close"></clr-icon> Excluir</button>
+            <button type="button" class="btn btn-sm btn-secondary" routerLink="/tarifa/{{selected.id}}"
+              *ngIf="selected!==undefined"><clr-icon shape="pencil"></clr-icon> Editar</button>
+
+        </div>
+      </clr-dg-action-bar>
+
+	    <clr-dg-column>Origem</clr-dg-column>
+	    <clr-dg-column>Destino</clr-dg-column>
+      <clr-dg-column>Vlr. Tarifa</clr-dg-column>
+      <clr-dg-column>Prazo Entrega</clr-dg-column>
+      <clr-dg-column>Distância</clr-dg-column>
+      <clr-dg-column>Distância Concorrência</clr-dg-column>
+      <clr-dg-column>Valor Frete</clr-dg-column>
+
+	    <clr-dg-row *clrDgItems="let tarifa of tarifas" [clrDgItem]="tarifa">
+          <clr-dg-cell>{{tarifa.cepOrigem}}</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.cepDestino}}</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.vrTarifaFrete}}</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.tempoEntrega}}</clr-dg-cell>
+	        <clr-dg-cell>{{tarifa.qtDistancia}} Km</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.qtDistanciaConcorrente}} Km</clr-dg-cell>
+          <clr-dg-cell>{{tarifa.valor}}</clr-dg-cell>
+	    </clr-dg-row>
+
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Tarifas por páginas</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+          de {{pagination.totalItems}} tarifas
+        </clr-dg-pagination>
+      </clr-dg-footer>
+
+	 </clr-datagrid>
+
+   <clr-modal [(clrModalOpen)]="isModalVisible">
+      <h3 class="modal-title">Excluir Tarifa</h3>
+      <div class="modal-body">
+        <p *ngIf="selected!==undefined">
+          Deseja excluir a tarifa de {{selected.cepOrigem}} para {{selected.cepDestino}}?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="excluir();">Sim</button>
+        <button type="button" class="btn btn-outline" (click)="isModalVisible = false">Não</button>
+      </div>
+   </clr-modal>
+
+   <clr-modal [(clrModalOpen)]="isModalVisibleAjuste">
+      <h3 class="modal-title">Ajustar Tarifas</h3>
+      <div class="modal-body">
+
+            <label>Taxa de Ajuste:</label><br/>
+            <input type="text" [(ngModel)]="taxaAjuste" name="taxaAjuste" />
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" *ngIf="taxaAjuste" (click)="reajustar();">Ajustar</button>
+        <button type="button" class="btn btn-outline" (click)="isModalVisibleAjuste = false">Não</button>
+      </div>
+   </clr-modal>
+
+  </div>
